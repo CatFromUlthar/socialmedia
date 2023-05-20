@@ -22,16 +22,16 @@ class DataBaseInteractor:
             res = cur.fetchone()
 
             if res[0] == 0:
-                cur.execute("""INSERT INTO menu (title, description) VALUES (?, ?)""",
-                            ('Home Page', 'Jump to home page'))
-                cur.execute("""INSERT INTO menu (title, description) VALUES (?, ?)""",
-                            ('My Page', 'Jump to my page'))
-                cur.execute("""INSERT INTO menu (title, description) VALUES (?, ?)""",
-                            ('Users', 'List of current site users'))
-                cur.execute("""INSERT INTO menu (title, description) VALUES (?, ?)""",
-                            ('News', 'Recent info about site'))
-                cur.execute("""INSERT INTO menu (title, description) VALUES (?, ?)""",
-                            ('About', 'About this site'))
+                cur.execute("""INSERT INTO menu (title, description, url) VALUES (?, ?, ?)""",
+                            ('Home Page', 'Jump to home page', 'http://127.0.0.1:5000'))
+                cur.execute("""INSERT INTO menu (title, description, url) VALUES (?, ?, ?)""",
+                            ('My Page', 'Jump to my page', 'http://127.0.0.1:5000/mypage'))
+                cur.execute("""INSERT INTO menu (title, description, url) VALUES (?, ?, ?)""",
+                            ('Users', 'List of current site users', 'http://127.0.0.1:5000'))
+                cur.execute("""INSERT INTO menu (title, description, url) VALUES (?, ?, ?)""",
+                            ('News', 'Recent info about site', 'http://127.0.0.1:5000'))
+                cur.execute("""INSERT INTO menu (title, description, url) VALUES (?, ?, ?)""",
+                            ('About', 'About this site', 'http://127.0.0.1:5000'))
 
     def create_users_table(self) -> None:
         with sqlite3.connect(self._db_name) as con:

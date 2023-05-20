@@ -3,12 +3,17 @@
 
 <head>
     <meta charset="UTF-8" about="My fully working social media">
+    <link rel="stylesheet" type="text/css" href="/static/style.css" >
     <title>{{ title }}</title>
 </head>
 
 <body>
 {% for m in menu %}
-    <ul>{{ m[0] }}</ul>
+    <ul>
+        <li>
+            <a href="{{ m[] }}"> {{ m[0] }} </a>
+        </li>
+    </ul>
 {% endfor %}
 
 {% block content %}{% endblock %}

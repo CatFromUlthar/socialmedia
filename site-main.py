@@ -3,14 +3,14 @@ from db import DataBaseInteractor
 
 import secrets
 
-app = Flask(__name__)
+app = Flask(__name__,  static_url_path='/static')
 app.secret_key = secrets.token_hex(16)
 
 
 @app.route('/', methods=['GET'])
 def main_page():
     my_db = DataBaseInteractor('flask.db')
-    menu = my_db.get_from_db('menu', 'title')
+    menu = my_db.get_from_db('menu', 'title', 'url')
     return render_template('index.html', menu=menu, title='Home Page')
 
 
