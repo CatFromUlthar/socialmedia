@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect
+from flask import Flask, render_template, request, redirect, session
 from db import DataBaseInteractor
 
 import secrets
@@ -12,6 +12,38 @@ def main_page():
     my_db = DataBaseInteractor('flask.db')
     menu = my_db.get_from_db('menu', 'title')
     return render_template('index.html', menu=menu, title='Home Page')
+
+
+@app.route('/mypage', methods=['GET'])
+def my_page():
+    my_db = DataBaseInteractor('flask.db')
+    if 'id' not in session:
+        return redirect('/login')
+
+
+@app.route('/login', methods=['GET'])
+def login_show():
+    my_db = DataBaseInteractor('flask.db')
+    menu = my_db.get_from_db('menu', 'title')
+    if 'id' not in session:
+        return render_template('login.html', menu=menu, title='Login')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    my_db = DataBaseInteractor('flask.db')
+
+    user_id = my_db.create_id()
+
+    name = request.form['name']
+    last_name = request.form['last_name']
+    sex = request.form['sex']
+    age = int(request.form['age'])
+    about = request.form['about']
+
+    my_db.add_user(user_id, name, last_name, sex, age, about)
+    session['id'] = my_db.get_from_db('users', 'id')
+    return redirect('/')
 
 
 if __name__ == '__main__':

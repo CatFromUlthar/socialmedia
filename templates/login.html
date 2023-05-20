@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Looks like you do not have a page. You can create it now</h1>
+
+
+<form action="/login" method="post" class="form-contact">
+
+    <p><label for="name">Name </label><br>
+    <input type="text"  id="name" name="name"><br><br>
+
+    <p><label for="last_name">Last name </label><br>
+    <input type="text" id="last_name" name="last_name"><br><br>
+
+    <p><label for="sex">Sex </label><br>
+    <input type="text" id="sex" name="sex"><br><br>
+
+    <p><label for="age">Age </label><br>
+    <input type="text" id="age" name="age"><br><br>
+
+    <p><label for="about">About </label><br>
+    <textarea name="about" id="about"></textarea><br><br>
+
+<input type="submit" value="Добавить страницу" name="add">
+</form>
+
+{% endblock %}
