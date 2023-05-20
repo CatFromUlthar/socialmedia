@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from db import DataBaseInteractor
 
 import secrets
@@ -16,13 +16,14 @@ def main_page():
 
 @app.route('/mypage', methods=['GET'])
 def my_page():
-    my_db = DataBaseInteractor('flask.db')
     if 'id' not in session:
         return redirect('/login')
+    else:
+        return redirect(url_for('show_page', user_id=session['id']))
 
 
 @app.route('/login', methods=['GET'])
-def login_show():
+def login_get():
     my_db = DataBaseInteractor('flask.db')
     menu = my_db.get_from_db('menu', 'title')
     if 'id' not in session:
@@ -30,7 +31,7 @@ def login_show():
 
 
 @app.route('/login', methods=['POST'])
-def login():
+def login_post():
     my_db = DataBaseInteractor('flask.db')
 
     user_id = my_db.create_id()
@@ -42,8 +43,21 @@ def login():
     about = request.form['about']
 
     my_db.add_user(user_id, name, last_name, sex, age, about)
-    session['id'] = my_db.get_from_db('users', 'id')
-    return redirect('/')
+    session['id'] = user_id
+    return redirect(url_for('show_page', user_id=user_id))
+
+
+@app.route('/page/<int:user_id>', methods=['GET'])
+def show_page(user_id):
+    my_db = DataBaseInteractor('flask.db')
+    user_list = my_db.get_from_db_with_params('users', 'id', str(user_id), 'name', '*')
+
+    name = user_list[0][1]
+    last_name = user_list[0][2]
+    age = user_list[0][4]
+    about = user_list[0][5]
+
+    return render_template('user_page.html', name=name, last_name=last_name, age=age, about=about)
 
 
 if __name__ == '__main__':
