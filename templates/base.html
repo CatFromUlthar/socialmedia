@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" about="My fully working social media">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+{% for m in menu %}
+    <ul>{{ m[0] }}</ul>
+{% endfor %}
+
+{% block content %}{% endblock %}
+</body>
+
+</html>
