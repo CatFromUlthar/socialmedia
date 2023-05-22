@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<h1>Looks like you do not have a page. You can create it now</h1>
+<h1>Create your page here</h1>
 
 
-<form action="/login" method="post" class="form-contact">
+<form action="{{ url_for('create_page') }}" method="post" class="form-contact">
 
     <p><label for="name">Name </label><br>
     <input type="text"  id="name" name="name"><br><br>
@@ -22,7 +22,7 @@
     <p><label for="about">About </label><br>
     <textarea name="about" id="about"></textarea><br><br>
 
-<input type="submit" value="Добавить страницу" name="add">
+<input type="submit" value="Add page" name="add">
 </form>
 
 {% endblock %}

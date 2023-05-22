@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Login in or create new page</h1>
+
+<form action="/enter" method="post" class="form-contact">
+
+    <p><label for="id">Your id</label><br>
+    <input type="text"  id="id" name="id"><br><br>
+
+    <input type="submit" value="Enter" name="enter">
+</form>
+
+<a href="http://127.0.0.1:5000/create">Add new page</a>
+
+{% endblock %}
