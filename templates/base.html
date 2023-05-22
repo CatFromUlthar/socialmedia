@@ -8,10 +8,10 @@
 </head>
 
 <body>
-{% for m in menu %}
+{% for m in menu[0:5] %}
     <ul>
         <li>
-            <a href="{{ m[] }}"> {{ m[0] }} </a>
+            <a href="{{ menu[menu.index(m)+5][0] }}"> {{ m[0] }} </a>
         </li>
     </ul>
 {% endfor %}

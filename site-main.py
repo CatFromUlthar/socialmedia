@@ -25,7 +25,7 @@ def my_page():
 @app.route('/login', methods=['GET'])
 def login_get():
     my_db = DataBaseInteractor('flask.db')
-    menu = my_db.get_from_db('menu', 'title')
+    menu = my_db.get_from_db('menu', 'title', 'url')
     if 'id' not in session:
         return render_template('login.html', menu=menu, title='Login')
 
@@ -51,13 +51,14 @@ def login_post():
 def show_page(user_id):
     my_db = DataBaseInteractor('flask.db')
     user_list = my_db.get_from_db_with_params('users', 'id', str(user_id), 'name', '*')
+    menu = my_db.get_from_db('menu', 'title', 'url')
 
-    name = user_list[0][1]
-    last_name = user_list[0][2]
-    age = user_list[0][4]
-    about = user_list[0][5]
+    name = user_list[1][1]
+    last_name = user_list[1][2]
+    age = user_list[1][4]
+    about = user_list[1][5]
 
-    return render_template('user_page.html', name=name, last_name=last_name, age=age, about=about)
+    return render_template('user_page.html', menu=menu, name=name, last_name=last_name, age=age, about=about)
 
 
 if __name__ == '__main__':

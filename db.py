@@ -47,19 +47,21 @@ class DataBaseInteractor:
 
     def get_from_db(self, table_name: str, *args) -> list:
         with sqlite3.connect(self._db_name) as con:
+            result = []
             cur = con.cursor()
             for i in args:
                 cur.execute(f"""SELECT {i} FROM {table_name}""")
-            result = cur.fetchall()
+                result = result + cur.fetchall()
             return result
 
     def get_from_db_with_params(self, table_name: str, key: str, value: str | int, *args) -> list:
         with sqlite3.connect(self._db_name) as con:
+            result = []
             cur = con.cursor()
             for i in args:
                 query = f"""SELECT {i} FROM {table_name} WHERE {key} = {value}"""
                 cur.execute(query)
-            result = cur.fetchall()
+                result = result + cur.fetchall()
             return result
 
     def add_user(self, user_id: int, name: str, last_name: str, sex: str, age: int, about: str) -> None:
