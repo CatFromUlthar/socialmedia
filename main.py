@@ -66,13 +66,16 @@ class MyView(View):
             session['user_id'] = user_id
             return redirect(url_for('page', user_id=user_id))
 
+    def associate_funcs(self):
+        app.add_url_rule('/', view_func=self.index, methods=['GET', 'POST'])
+        app.add_url_rule('/mypage', view_func=self.my_page, methods=['GET', 'POST'])
+        app.add_url_rule('/enter', view_func=self.enter_profile, methods=['GET', 'POST'])
+        app.add_url_rule('/page/<int:user_id>', view_func=self.page, methods=['GET', 'POST'])
+        app.add_url_rule('/create', view_func=self.create_page, methods=['GET', 'POST'])
+
 
 if __name__ == '__main__':
     general_view = MyView('flask.db')
-    app.add_url_rule('/', view_func=general_view.index, methods=['GET', 'POST'])
-    app.add_url_rule('/mypage', view_func=general_view.my_page, methods=['GET', 'POST'])
-    app.add_url_rule('/enter', view_func=general_view.enter_profile, methods=['GET', 'POST'])
-    app.add_url_rule('/page/<int:user_id>', view_func=general_view.page, methods=['GET', 'POST'])
-    app.add_url_rule('/create', view_func=general_view.create_page, methods=['GET', 'POST'])
+    general_view.associate_funcs()
 
     app.run(debug=True)
