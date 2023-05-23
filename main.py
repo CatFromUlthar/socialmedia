@@ -71,6 +71,8 @@ class MyView(View):
             about = request.form['about']
             avatar = request.files['avatar']
             avatar_name = avatar.filename
+            if avatar_name[-3:] != 'png' or avatar_name[-3:] != 'jpg':
+                return render_template('create_page.html', menu=self.menu, title='Create your personal page')
             avatar.save(os.path.join(app.root_path, '/static/avatars', avatar_name))
 
             self._db_object.add_user(user_id, name, last_name, sex, age, about, avatar_name)
