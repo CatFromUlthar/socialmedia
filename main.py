@@ -4,6 +4,9 @@ from db import DataBaseInteractor
 
 import secrets
 
+import os
+os.chmod('/home/kolovrat/PycharmProjects/socialmedia', 0o777)
+
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = secrets.token_hex(16)
 
@@ -48,9 +51,11 @@ class MyView(View):
             last_name = user_data[2]
             age = user_data[4]
             about = user_data[5]
+            avatar_name = user_data[6]
 
             return render_template('user_page.html', menu=self.menu, title='User page',
-                                   name=name, last_name=last_name, age=age, about=about, user_id=user_id)
+                                   name=name, last_name=last_name, age=age, about=about, user_id=user_id,
+                                   avatar_name=avatar_name)
 
     def create_page(self):
         if request.method == 'GET':
@@ -64,8 +69,11 @@ class MyView(View):
             sex = request.form['sex']
             age = int(request.form['age'])
             about = request.form['about']
+            avatar = request.files['avatar']
+            avatar_name = avatar.filename
+            avatar.save(os.path.join(app.root_path, '/static/avatars', avatar_name))
 
-            self._db_object.add_user(user_id, name, last_name, sex, age, about)
+            self._db_object.add_user(user_id, name, last_name, sex, age, about, avatar_name)
             session['user_id'] = user_id
             return redirect(url_for('page', user_id=user_id))
 

@@ -5,7 +5,7 @@
 <h1>Create your page here</h1>
 
 
-<form action="{{ url_for('create_page') }}" method="post" class="form-contact">
+<form action="{{ url_for('create_page') }}" method="post" enctype="multipart/form-data" class="form-contact">
 
     <p><label for="name">Name </label><br>
     <input type="text"  id="name" name="name"><br><br>
@@ -21,6 +21,9 @@
 
     <p><label for="about">About </label><br>
     <textarea name="about" id="about"></textarea><br><br>
+
+    <p><label for="avatar">Your avatar </label><br>
+    <input type="file" id="avatar" name="avatar">
 
 <input type="submit" value="Add page" name="add">
 </form>

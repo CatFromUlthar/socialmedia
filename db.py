@@ -42,7 +42,8 @@ class DataBaseInteractor:
                last_name TEXT,
                sex TEXT,
                age INTEGER,
-               about TEXT
+               about TEXT,
+               avatar_name TEXT
                )""")
 
     def get_from_db(self, table_name: str, *columns, **params) -> list:
@@ -59,11 +60,12 @@ class DataBaseInteractor:
                 result = result + cur.fetchall()
             return result
 
-    def add_user(self, user_id: int, name: str, last_name: str, sex: str, age: int, about: str) -> None:
+    def add_user(self, user_id: int, name: str, last_name: str, sex: str, age: int,
+                 about: str, avatar_name: str) -> None:
         with sqlite3.connect(self._db_name) as con:
             cur = con.cursor()
-            cur.execute("""INSERT INTO users (id, name, last_name, sex, age, about) \
-            VALUES (?, ?, ?, ?, ?, ?)""", (user_id, name, last_name, sex, age, about))
+            cur.execute("""INSERT INTO users (id, name, last_name, sex, age, about, avatar_name) \
+            VALUES (?, ?, ?, ?, ?, ?, ?)""", (user_id, name, last_name, sex, age, about, avatar_name))
 
     def create_id(self) -> int:
         id_list = self.get_from_db('users', 'id')
