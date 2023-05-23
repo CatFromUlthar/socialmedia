@@ -3,16 +3,14 @@ from flask.views import View
 from db import DataBaseInteractor
 
 import secrets
-
 import os
-os.chmod('/home/kolovrat/PycharmProjects/socialmedia', 0o777)
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = secrets.token_hex(16)
 
 
 class MyView(View):
-    methods = ['GET', 'POST']
+    METHODS = ['GET', 'POST']
 
     def __init__(self, db_address):
         self._db_object = DataBaseInteractor(db_address)
@@ -80,15 +78,8 @@ class MyView(View):
             return redirect(url_for('page', user_id=user_id))
 
     def associate_funcs(self):
-        app.add_url_rule('/', view_func=self.index, methods=['GET', 'POST'])
-        app.add_url_rule('/mypage', view_func=self.my_page, methods=['GET', 'POST'])
-        app.add_url_rule('/enter', view_func=self.enter_profile, methods=['GET', 'POST'])
-        app.add_url_rule('/page/<int:user_id>', view_func=self.page, methods=['GET', 'POST'])
-        app.add_url_rule('/create', view_func=self.create_page, methods=['GET', 'POST'])
-
-
-if __name__ == '__main__':
-    general_view = MyView('flask.db')
-    general_view.associate_funcs()
-
-    app.run(debug=True)
+        app.add_url_rule('/', view_func=self.index, methods=self.METHODS)
+        app.add_url_rule('/mypage', view_func=self.my_page, methods=self.METHODS)
+        app.add_url_rule('/enter', view_func=self.enter_profile, methods=self.METHODS)
+        app.add_url_rule('/page/<int:user_id>', view_func=self.page, methods=self.METHODS)
+        app.add_url_rule('/create', view_func=self.create_page, methods=self.METHODS)
