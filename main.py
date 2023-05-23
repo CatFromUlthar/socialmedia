@@ -18,7 +18,8 @@ class MyView(View):
     def index(self):
         return render_template('index.html', menu=self.menu, title='Home Page')
 
-    def my_page(self):
+    @staticmethod
+    def my_page():
         if 'user_id' not in session:
             return redirect(url_for('enter_profile'))
         user_id = session['user_id']
@@ -28,7 +29,8 @@ class MyView(View):
         if request.method == 'GET':
             return render_template('enter.html', menu=self.menu, title='Login or create page')
         elif request.method == 'POST':
-            id_list = [i[0] for i in self._db_object.get_from_db('users', 'id')]
+            id_list = self._db_object.get_from_db('users', 'id')
+            id_list = [i[0] for i in id_list]
             if int(request.form['id']) not in id_list:
                 return render_template('enter.html', menu=self.menu, title='Login or create page')
             else:
@@ -36,15 +38,16 @@ class MyView(View):
                 return redirect(url_for('page', user_id=int(request.form['id'])))
 
     def page(self, user_id: int):
-        if user_id != session['user_id']:
+        if ('user_id' in session and user_id != session['user_id']) or 'user_id' not in session:
             return redirect(url_for('enter_profile'))
 
         else:
-            user_data = self._db_object.get_from_db_with_params('users', 'id', user_id, '*')
-            name = user_data[0][1]
-            last_name = user_data[0][2]
-            age = user_data[0][4]
-            about = user_data[0][5]
+            user_data = self._db_object.get_from_db('users', '*', id=user_id)
+            user_data = user_data[0]
+            name = user_data[1]
+            last_name = user_data[2]
+            age = user_data[4]
+            about = user_data[5]
 
             return render_template('user_page.html', menu=self.menu, title='User page',
                                    name=name, last_name=last_name, age=age, about=about, user_id=user_id)

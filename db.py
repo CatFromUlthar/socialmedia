@@ -45,21 +45,16 @@ class DataBaseInteractor:
                about TEXT
                )""")
 
-    def get_from_db(self, table_name: str, *args) -> list:
+    def get_from_db(self, table_name: str, *columns, **params) -> list:
         with sqlite3.connect(self._db_name) as con:
             result = []
+            param_query = ''
+            if params is not None:
+                for i in params:
+                    param_query = f""" WHERE {i} = {(params[i])}"""
             cur = con.cursor()
-            for i in args:
-                cur.execute(f"""SELECT {i} FROM {table_name}""")
-                result = result + cur.fetchall()
-            return result
-
-    def get_from_db_with_params(self, table_name: str, key: str, value: str | int, *args) -> list:
-        with sqlite3.connect(self._db_name) as con:
-            result = []
-            cur = con.cursor()
-            for i in args:
-                query = f"""SELECT {i} FROM {table_name} WHERE {key} = {value}"""
+            for i in columns:
+                query = f"""SELECT {i} FROM {table_name}""" + param_query
                 cur.execute(query)
                 result = result + cur.fetchall()
             return result
@@ -71,8 +66,7 @@ class DataBaseInteractor:
             VALUES (?, ?, ?, ?, ?, ?)""", (user_id, name, last_name, sex, age, about))
 
     def create_id(self) -> int:
-        raw_list = self.get_from_db('users', 'id')
-        id_list = [i[0] for i in raw_list]
+        id_list = self.get_from_db('users', 'id')
         user_id = randint(0, 999999)
         while user_id in id_list:
             user_id = randint(0, 999999)
