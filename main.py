@@ -69,13 +69,18 @@ class MyView(View):
             about = request.form['about']
             avatar = request.files['avatar']
             avatar_name = avatar.filename
-            if avatar_name[-3:] != 'png' or avatar_name[-3:] != 'jpg':
+            if avatar_name[-3:] not in ('png', 'jpg'):
                 return render_template('create_page.html', menu=self.menu, title='Create your personal page')
-            avatar.save(os.path.join(app.root_path, '/static/avatars', avatar_name))
 
+            avatar.save(os.path.join(app.root_path, 'static/avatars', avatar_name))
             self._db_object.add_user(user_id, name, last_name, sex, age, about, avatar_name)
             session['user_id'] = user_id
             return redirect(url_for('page', user_id=user_id))
+
+    def show_pages(self):
+        users = self._db_object.get_from_db('users', '*')
+        print(users)
+        return render_template('users.html', menu=self.menu, users=users)
 
     def associate_funcs(self):
         app.add_url_rule('/', view_func=self.index, methods=self.METHODS)
@@ -83,3 +88,4 @@ class MyView(View):
         app.add_url_rule('/enter', view_func=self.enter_profile, methods=self.METHODS)
         app.add_url_rule('/page/<int:user_id>', view_func=self.page, methods=self.METHODS)
         app.add_url_rule('/create', view_func=self.create_page, methods=self.METHODS)
+        app.add_url_rule('/showpages', view_func=self.show_pages, methods=self.METHODS)

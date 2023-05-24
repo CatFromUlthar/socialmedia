@@ -26,7 +26,7 @@ class DataBaseInteractor:
                 cur.execute("""INSERT INTO menu VALUES (?, ?)""",
                             ('My Page', '/mypage'))
                 cur.execute("""INSERT INTO menu VALUES (?, ?)""",
-                            ('Users', '/'))
+                            ('Users', '/showpages'))
                 cur.execute("""INSERT INTO menu VALUES (?, ?)""",
                             ('News', '/'))
                 cur.execute("""INSERT INTO menu VALUES (?, ?)""",
