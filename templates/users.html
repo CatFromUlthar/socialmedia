@@ -5,8 +5,8 @@
 {% for u in users %}
     <ul>
         <li>
-            <a href="{{ url_for('page', user_id=u[0]) }}"><b>{{ u[1] }} {{ u[2] }}</b></a>
-          <p>{{ u[5] }}</p>
+            <a href="{{ url_for('page', user_id=u[0]) }}"><b>{{ u[2] }} {{ u[3] }}</b></a>
+          <p>{{ u[6] }}</p>
         </li>
     </ul>
 {% endfor %}
