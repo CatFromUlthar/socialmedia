@@ -14,7 +14,7 @@ class MyView(View):
 
     def __init__(self, db_address):
         self._db_object = DataBaseInteractor(db_address)
-        self.menu = self._db_object.get_from_db('menu', 'title', 'url')
+        self.menu = self._db_object.get_from_db('menu', '*')
 
     def index(self):
         return render_template('index.html', menu=self.menu, title='Home Page')
