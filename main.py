@@ -127,7 +127,11 @@ class MyView(View):
     # Shows existing user pages
     def show_pages(self):
         users = self._db_object.get_from_db('users', '*')
-        return render_template('users.html', menu=self.menu, users=users)
+        return render_template('users.html', menu=self.menu, title='User pages', users=users)
+
+    # Just about page
+    def about(self):
+        return render_template('about.html', menu=self.menu, title='About this site')
 
     # Routes funcs with url addresses
     def associate_funcs(self):
@@ -141,3 +145,4 @@ class MyView(View):
         app.add_url_rule('/showpages', view_func=self.show_pages, methods=self.METHODS)
         app.add_url_rule('/createpost', view_func=self.create_post_get, methods=['GET'])
         app.add_url_rule('/createpost', view_func=self.create_post_post, methods=['POST'])
+        app.add_url_rule('/about', view_func=self.about, methods=['GET'])

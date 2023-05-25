@@ -31,7 +31,7 @@ class DataBaseInteractor:
                 cur.execute("""INSERT INTO menu VALUES (?, ?)""",
                             ('News', '/'))
                 cur.execute("""INSERT INTO menu VALUES (?, ?)""",
-                            ('About', '/'))
+                            ('About', '/about'))
 
     def create_users_table(self) -> None:
         with sqlite3.connect(self._db_name) as con:
