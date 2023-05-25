@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, flash
 from flask.views import View
 from db import DataBaseInteractor
 
@@ -25,6 +25,7 @@ class MyView(View):
     @staticmethod
     def my_page():
         if 'user_id' not in session:
+            flash('You are not logged in. Please do it or create a new page.')
             return redirect(url_for('enter_profile_get'))
         user_id = session['user_id']
         return redirect(url_for('page', user_id=user_id))
@@ -42,11 +43,13 @@ class MyView(View):
         password = request.form['password']
 
         if got_id not in id_list:
+            flash('This user id does not exist.')
             return render_template('enter.html', menu=self.menu, title='Login or create page')
 
         needed_password = self._db_object.get_from_db('users', 'password', id=got_id)[0][0]
 
         if needed_password != password:
+            flash('Wrong password.')
             return render_template('enter.html', menu=self.menu, title='Login or create page')
 
         session['user_id'] = int(request.form['id'])
@@ -73,12 +76,14 @@ class MyView(View):
                                    name=name, last_name=last_name, age=age, about=about, user_id=user_id,
                                    avatar_name=avatar_name, posts=posts)
 
+        flash('You need to login as this user to view this page.')
         return redirect(url_for('enter_profile_get'))
 
     # Create post (GET method) - loads form for adding post
     def create_post_get(self):
         if 'password' in session:
             return render_template('create_post.html', menu=self.menu, title='Create post')
+        flash('You need to be logged in to create post.')
         return redirect(url_for('enter_profile_get'))
 
     # Create post (POST method) - harvest data from input form
@@ -109,6 +114,7 @@ class MyView(View):
         password = request.form['password']
 
         if avatar_name[-3:] not in ('png', 'jpg'):
+            flash('Wrong file type. Allowed only jpg or png.')
             return render_template('create_page.html', menu=self.menu, title='Create your personal page')
 
         avatar.save(os.path.join(app.root_path, 'static/avatars', avatar_name))

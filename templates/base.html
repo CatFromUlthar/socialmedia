@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 <head>
     <meta charset="UTF-8" about="My fully working social media">
     <link rel="stylesheet" type="text/css" href="/static/styles/style.css" >
