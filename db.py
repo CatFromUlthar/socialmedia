@@ -8,6 +8,7 @@ class DataBaseInteractor:
         self._db_name = db_name
         self.create_menu_table()
         self.create_users_table()
+        self.create_posts_table()
 
     def create_menu_table(self) -> None:
         with sqlite3.connect(self._db_name) as con:
@@ -46,6 +47,15 @@ class DataBaseInteractor:
                avatar_name TEXT
                )""")
 
+    def create_posts_table(self) -> None:
+        with sqlite3.connect(self._db_name) as con:
+            cur = con.cursor()
+            cur.execute("""CREATE TABLE IF NOT EXISTS posts (
+               id INTEGER,
+               title TEXT,
+               post_content TEXT
+               )""")
+
     def get_from_db(self, table_name: str, *columns, **params) -> list:
         with sqlite3.connect(self._db_name) as con:
             result = []
@@ -66,6 +76,12 @@ class DataBaseInteractor:
             cur = con.cursor()
             cur.execute("""INSERT INTO users \
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (user_id, password, name, last_name, sex, age, about, avatar_name))
+
+    def add_post(self, user_id: int, title: str, post_content: str) -> None:
+        with sqlite3.connect(self._db_name) as con:
+            cur = con.cursor()
+            cur.execute("""INSERT INTO posts \
+            VALUES (?, ?, ?)""", (user_id, title, post_content))
 
     def create_id(self) -> int:
         id_list = self.get_from_db('users', 'id')

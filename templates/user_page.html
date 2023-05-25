@@ -3,8 +3,18 @@
 {% block content %}
 
 <img src="/static/avatars/{{ avatar_name }}" alt="User Avatar">
-<h1>{{ name }} {{ last_name }}</h1>
+<h1><b>{{ name }} {{ last_name }}</b></h1>
 <h2>{{ age }}</h2>
 <p>{{ about }}</p>
+
+<h1>Posts: </h1>
+
+<a href="/createpost">Create new post </a>
+
+{% for p in posts %}
+<h3>{{ p[1] }}</h3>
+<p>{{ p[2] }}</p>
+
+{% endfor %}
 
 {% endblock %}
