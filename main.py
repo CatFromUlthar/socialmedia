@@ -70,7 +70,7 @@ class MyView(View):
             about = user_data[6]
             avatar_name = user_data[7]
 
-            posts = self._db_object.get_from_db('posts', '*', id=user_id)
+            posts = self._db_object.get_from_db('posts', '*', user_id=user_id)
 
             return render_template('user_page.html', menu=self.menu, title='User page',
                                    name=name, last_name=last_name, age=age, about=about, user_id=user_id,
@@ -89,11 +89,12 @@ class MyView(View):
     # Create post (POST method) - harvest data from input form
     def create_post_post(self):
 
+        user_id = session['user_id']
+        post_id = self._db_object.create_post_id()
         title = request.form['title']
         post_content = request.form['post_content']
-        user_id = session['user_id']
 
-        self._db_object.add_post(user_id, title, post_content)
+        self._db_object.add_post(post_id, user_id, title, post_content)
         return redirect(url_for('my_page'))
 
     # Create page (GET method) - loads creating form
@@ -103,7 +104,7 @@ class MyView(View):
     # Create page (POST method) - harvest data from input form
     def create_page_post(self):
 
-        user_id = self._db_object.create_id()
+        user_id = self._db_object.create_user_id()
         name = request.form['name']
         last_name = request.form['last_name']
         sex = request.form['sex']
