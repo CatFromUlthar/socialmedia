@@ -135,15 +135,15 @@ class MyView(View):
         return render_template('about.html', menu=self.menu, title='About this site')
 
     # Routes funcs with url addresses
-    def associate_funcs(self):
-        app.add_url_rule('/', view_func=self.index, methods=self.METHODS)
-        app.add_url_rule('/mypage', view_func=self.my_page, methods=self.METHODS)
-        app.add_url_rule('/enter', view_func=self.enter_profile_get, methods=['GET'])
-        app.add_url_rule('/enter', view_func=self.enter_profile_post, methods=['POST'])
-        app.add_url_rule('/page/<int:user_id>', view_func=self.page, methods=self.METHODS)
-        app.add_url_rule('/create', view_func=self.create_page_get, methods=['GET'])
-        app.add_url_rule('/create', view_func=self.create_page_post, methods=['POST'])
-        app.add_url_rule('/showpages', view_func=self.show_pages, methods=self.METHODS)
-        app.add_url_rule('/createpost', view_func=self.create_post_get, methods=['GET'])
-        app.add_url_rule('/createpost', view_func=self.create_post_post, methods=['POST'])
-        app.add_url_rule('/about', view_func=self.about, methods=['GET'])
+    def associate_funcs(self, current_app) -> None:
+        current_app.add_url_rule('/', view_func=self.index, methods=self.METHODS)
+        current_app.add_url_rule('/mypage', view_func=self.my_page, methods=self.METHODS)
+        current_app.add_url_rule('/enter', view_func=self.enter_profile_get, methods=['GET'])
+        current_app.add_url_rule('/enter', view_func=self.enter_profile_post, methods=['POST'])
+        current_app.add_url_rule('/page/<int:user_id>', view_func=self.page, methods=self.METHODS)
+        current_app.add_url_rule('/create', view_func=self.create_page_get, methods=['GET'])
+        current_app.add_url_rule('/create', view_func=self.create_page_post, methods=['POST'])
+        current_app.add_url_rule('/showpages', view_func=self.show_pages, methods=self.METHODS)
+        current_app.add_url_rule('/createpost', view_func=self.create_post_get, methods=['GET'])
+        current_app.add_url_rule('/createpost', view_func=self.create_post_post, methods=['POST'])
+        current_app.add_url_rule('/about', view_func=self.about, methods=['GET'])
